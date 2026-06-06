@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel = "stylesheet" href = "styles.css" />
+    <script src = "script.js" defer></script>
+</head>
+<body>
+    <div id = "muteSoundEffect">♪</div>
+    <div id = "muteMusic">♫</div>
+    <audio id="bg-music" preload="auto"></audio>
+    <audio id="click-sound" preload="auto"></audio>
+    <audio id="upgrade-sound" preload="auto"></audio>
+    <audio id="prestige-sound" preload="auto"></audio>
+    <audio id="prestigeUpgrade-sound" preload="auto"></audio>
+    <div class = "left">
+            <h1>Number Incremental Game</h1>
+            <div id = "number">0</div>
+            <div id = "increase">Increase</div>
+            <h2>Stats</h2>
+            <h3>Click Power: <span id = "statTextPower">1</span></h3>
+            <h3>Click/Sec: <span id = "statTextSec">0</span></h3>
+    </div>
+    <div class = "middle">
+        <h1>Upgrades</h1>
+        <div id = "clickPowerUpgrade" onclick="upgradeClick()">
+            <div id = "buttonText">+1 Click</div>
+            <div id = "buttonText">Cost: <span id = "clickCost">10</span></div>
+            <div id = "buttonText">Owned: <span id = "clickOwned">0</div>
+        </div>
+        <div id = "clickTimeUpgrade" onclick="upgradeTime()">
+            <div id = "buttonText">+1 Click/Sec</div>
+            <div id = "buttonText">Cost: <span id = "timeCost">100</span></div>
+            <div id = "buttonText">Owned: <span id = "timeOwned">0</span></div>
+        </div>
+         <div id = "clickPowerTimeTwoUpgrade" onclick="upgradeTimesTwo()">
+            <div id = "buttonText">2x Click</div>
+            <div id = "buttonText">Cost: <span id = "powerTimeTwoCost">1000</span></div>
+            <div id = "buttonText">Owned: <span id = "powerTimeTwoOwned">0</span></div>
+        </div>
+        <div id = "timePowerTimeTwoUpgrade" onclick="upgradeTimesTwoSec()">
+            <div id = "buttonText">2x Click/Sec</div>
+            <div id = "buttonText">Cost: <span id = "timePowerTimesTwoCost">2000</span></div>
+            <div id = "buttonText">Owned: <span id = "timePowerTimesTwoOwned">0</span></div>
+        </div>
+    </div>
+    <div class = "right">
+        <h1>Prestige</h1>
+        <div id = "prestigeAmount">0</div>
+        <div id = "prestigeUpgrade" onclick="upgradePrestige()">
+            <div id = "buttonText">+<span id="prestigeCanBuy">1</span> Presitge</div>
+            <div id = "buttonText">Cost: <span id = "prestigeCost">10000</span></div>
+        </div>
+        <h1>Prestige Upgrades</h1>
+        <div id = "startWithTenClickSec" onclick="upgradeStartingClick()">
+            <div id = "buttonText">+<span id = "clickSecStartPower">10</span> Click/Sec on Start</div>
+            <div id = "buttonText">Cost: <span id = "oneClickSecCost">1</span> Prestige</div>
+        </div>
+        <div id = "startWithHundred" onclick="upgradeStartWithHundred()">
+            <div id = "buttonText">+<span id = "clickStartPower">100</span> Clicks on Start </div>
+            <div id = "buttonText">Cost: <span id = "clickStartCost">1</span> Prestige</div>
+        </div> 
+    </div>
+</div></body>
+</html>

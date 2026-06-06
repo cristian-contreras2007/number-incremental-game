@@ -1,0 +1,122 @@
+body { 
+  user-select: none; 
+  background-color: black; 
+  display: flex; 
+  flex-direction: row; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  align-items: center;
+  min-height: 100vh; 
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+.left, .middle, .right { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  flex-direction: column; 
+  margin: auto;
+  flex: 1 1 300px;
+  padding: 10px;
+}
+
+h1, h2, h3 { 
+  color: white; 
+  text-align: center;
+}
+
+
+#number { 
+  color: white; 
+  font-size: clamp(7rem, 15vw, 9rem); 
+  line-height: 1;
+  margin: 20px 0;
+  text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white; 
+}
+
+
+#increase { 
+  border: 5px solid white; 
+  width: 100%;
+  max-width: 250px; 
+  height: 4.5rem; 
+  border-radius: 30px; 
+  color: white; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+#clickPowerUpgrade, #clickTimeUpgrade, #prestigeUpgrade, #startWithTenClickSec, #prestigeUpgrade5, #clickPowerTimeTwoUpgrade, #timePowerTimeTwoUpgrade, #startWithHundred { 
+  border: 5px solid white; 
+  width: 100%;
+  max-width: 450px; 
+  min-width: 300px;
+  height: 3.5rem; 
+  border-radius: 30px; 
+  color: white; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  margin-bottom: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#buttonText { 
+  margin: auto; 
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column; 
+  }
+}
+
+#prestigeAmount {
+  color: white; 
+  font-size: clamp(5rem, 10vw, 6rem); 
+  line-height: 1;
+  margin: 20px 0;
+  text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white; 
+}
+
+#muteMusic,
+#muteSoundEffect {
+  position: fixed;
+  top: 2vw;
+
+  width: clamp(40px, 6vw, 50px);
+  height: clamp(40px, 6vw, 50px);
+  font-size: clamp(14px, 2vw, 20px);
+
+  color: white;
+  background: black;
+  border: 3px solid white;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+#muteMusic {
+  right: 2vw;
+}
+
+#muteSoundEffect {
+  right: calc(2vw + clamp(40px, 6vw, 50px) + 10px);
+}

@@ -92,6 +92,13 @@ h1, h2, h3 {
   text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white; 
 }
 
+button, #increase, #clickPowerUpgrade, #clickTimeUpgrade,
+#prestigeUpgrade, #startWithTenClickSec, #prestigeUpgrade5,
+#clickPowerTimeTwoUpgrade, #timePowerTimeTwoUpgrade, #startWithHundred,
+#muteMusic, #muteSoundEffect {
+  -webkit-tap-highlight-color: transparent;
+}
+
 #muteMusic,
 #muteSoundEffect {
   position: fixed;

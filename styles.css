@@ -440,3 +440,24 @@ button, #increase, #clickPowerUpgrade, #clickTimeUpgrade,
     overflow-wrap: break-word;
     line-height: 1.2;
 }
+
+#closeAchievements {
+  border: 3px solid white;
+  border-radius: 20px;
+
+  padding: 0.6rem 1.5rem;
+  width: fit-content;
+  min-width: 100px;
+
+  color: white;
+  background: transparent;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+
+  margin: 1.5rem auto 0 auto; /* centers horizontally */
+  cursor: pointer;
+}

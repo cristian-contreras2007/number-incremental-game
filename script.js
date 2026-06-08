@@ -70,21 +70,39 @@ let muteMusicButton = document.getElementById("muteMusic");
 
 let permanentStartingSec = 0
 let permanentStartingClick = 0
+let prestigeTracker = 0
 const upgradeSoundPlayer = document.getElementById('upgrade-sound');
 const prestigeSoundPlayer = document.getElementById('prestige-sound');
 const prestigeUpgradeSoundPlayer = document.getElementById('prestigeUpgrade-sound');
+const achievementUnlockedSoundPlayer = document.getElementById('achievementUnlock-sound')
+const breakAchievementSoundPlayer = document.getElementById('breakAchievement-sound')
 let musicMuted = false;
 let soundEffectsMuted = false;
 
 function formatNumber(num) {
-    if (num >= 1e15) return (num / 1e15).toFixed(2) + "Qa";
+    if (num >= 1e63) return (num / 1e63).toFixed(2) + "Vg";   // Vigintillion
+    if (num >= 1e60) return (num / 1e60).toFixed(2) + "Nv";   // Novemdecillion
+    if (num >= 1e57) return (num / 1e57).toFixed(2) + "Oc";   // Octodecillion
+    if (num >= 1e54) return (num / 1e54).toFixed(2) + "Sp";   // Septendecillion
+    if (num >= 1e51) return (num / 1e51).toFixed(2) + "Sx";   // Sexdecillion
+    if (num >= 1e48) return (num / 1e48).toFixed(2) + "Qi";   // Quindecillion
+    if (num >= 1e45) return (num / 1e45).toFixed(2) + "Qd";   // Quattuordecillion
+    if (num >= 1e42) return (num / 1e42).toFixed(2) + "Td";   // Tredecillion
+    if (num >= 1e39) return (num / 1e39).toFixed(2) + "Dd";   // Duodecillion
+    if (num >= 1e36) return (num / 1e36).toFixed(2) + "Ud";   // Undecillion
+    if (num >= 1e33) return (num / 1e33).toFixed(2) + "Dc";   // Decillion
+    if (num >= 1e30) return (num / 1e30).toFixed(2) + "No";   // Nonillion
+    if (num >= 1e27) return (num / 1e27).toFixed(2) + "Oc";   // Octillion
+    if (num >= 1e24) return (num / 1e24).toFixed(2) + "Sp";   // Septillion
+    if (num >= 1e21) return (num / 1e21).toFixed(2) + "Sx";   // Sextillion
+    if (num >= 1e18) return (num / 1e18).toFixed(2) + "Qi";   // Quintillion
+    if (num >= 1e15) return (num / 1e15).toFixed(2) + "Qa";   // Quadrillion
     if (num >= 1e12) return (num / 1e12).toFixed(2) + "T";
     if (num >= 1e9)  return (num / 1e9).toFixed(2) + "B";
     if (num >= 1e6)  return (num / 1e6).toFixed(2) + "M";
     if (num >= 1e3)  return (num / 1e3).toFixed(2) + "k";
     return num.toFixed(0);
 }
-
 const audioPlayer = document.getElementById('bg-music'); 
 
 const clickSoundPlayer = document.getElementById('click-sound');
@@ -130,19 +148,6 @@ let musicStarted = false;
 // Core game click engine
 function handleGameClick() {
     
-    if (!musicStarted && audioPlayer) {
-        audioPlayer.muted = musicMuted;
-        audioPlayer.volume = 0.5;
-        audioPlayer.play()
-            .then(() => {
-                musicStarted = true; 
-                console.log("🎵 Background playlist started successfully!");
-            })
-            .catch(error => {
-                console.log("Play blocked by browser context:", error.message);
-            });
-    }
-
     if (!soundEffectsMuted && clickSoundPlayer && clickSoundPlayer.src) {
         const tempSound = new Audio(clickSoundPlayer.src);
         tempSound.volume = 0.4; 
@@ -150,8 +155,14 @@ function handleGameClick() {
             console.log("SFX blocked by browser context:", error.message);
         });
     }
+    
 
-    number += clickPower;
+    number += clickPower; 
+
+     if (!firstClickAchievement) {
+        unlockFirstClickAchievement();
+    }
+
     extractNumber.innerHTML = formatNumber(number);
     
     if (typeof saveGame === "function") saveGame(); 
@@ -205,6 +216,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prestigeUpgradeSoundPlayer) {
         prestigeUpgradeSoundPlayer.src = 'sound/liecio-bonus-points-190035.mp3';
         prestigeUpgradeSoundPlayer.volume = 0.5
+    } 
+    if (achievementUnlockedSoundPlayer) {
+        achievementUnlockedSoundPlayer.src = "sound/universfield-game-level-complete-143022.mp3"
+        achievementUnlockedSoundPlayer.volume = 0.5
+    }
+    
+    if (breakAchievementSoundPlayer) {
+        breakAchievementSoundPlayer.src = "sound/u_3bsnvt0dsu-spin-fail-295088.mp3"
+        breakAchievementSoundPlayer.volume = 0.5
     }
 }
 
@@ -247,6 +267,28 @@ function playPrestigeUpgradeSound() {
     }
 }
 
+function playAchievementSound() {
+    if (soundEffectsMuted) return;
+    if (achievementUnlockedSoundPlayer && achievementUnlockedSoundPlayer.src) {
+        const tempAchievementUnlockedSound = new Audio (achievementUnlockedSoundPlayer.src);
+        tempAchievementUnlockedSound.volume = 0.5;
+        tempAchievementUnlockedSound.play().catch(error => {
+            console.log("Upgrade SFX blocked:", error.message);
+        })
+    }
+}
+
+function playBreakGameSound() {
+    if (soundEffectsMuted) return;
+    if (breakAchievementSoundPlayer && breakAchievementSoundPlayer.src) {
+        const tempBreakAchievementSound = new Audio (breakAchievementSoundPlayer.src);
+        tempBreakAchievementSound.volume = 0.5;
+        tempBreakAchievementSound.play().catch(error => {
+            console.log("Upgrade SFX blocked:", error.message)
+        })
+    }
+}
+
 function upgradeTimesTwo() {
     if (number >= powerTimeTwoCost) {
         number = number - powerTimeTwoCost;
@@ -268,6 +310,7 @@ function upgradeClick() {
         clickCost = Math.ceil(clickCost * 1.5);
         clickOwned ++
         clickPower ++
+        totalPlusOneClickOwned ++
 
         extractClickCost.innerHTML = formatNumber(clickCost);
         extractNumber.innerHTML = formatNumber(number);
@@ -348,6 +391,7 @@ function upgradePrestige() {
             prestigeCost = Math.ceil(prestigeCost * 1.2); 
             prestigeAmount++; 
             purchasedPrestiges++; 
+            prestigeTracker = 1
         } 
     
         timeOwned = 0 
@@ -469,12 +513,130 @@ function upgradeTimesTwoSec() {
 
 
 setInterval(() => {
-number += timePower
-extractNumber.innerHTML = formatNumber(number);
-updateButtonBorders(); 
+    number += timePower;
+    extractNumber.innerHTML = formatNumber(number);
+    updateButtonBorders(); 
 }, 1000)
 
 function updateUI() {
+
+    if (clickOwned == 1 && !ownPlusOneClickAchievement) {
+        unlockOwnPlusOneClickAchievement();
+    }
+    if (timeOwned == 1 && !ownPlusOneClickPerSecAchievement) {
+        unlockOwnPlusOneClickPerSecAchievement();
+    }
+    if (powerTimeTwoOwned == 1 && !ownTimesTwoClickAchievement) {
+        unlockOwnTimesTwoClickAchievement();
+    }
+    if (timePowerTimesTwoOwned == 1 && !ownTimesTwoClickSecAchievement) {
+        unlockOwnTimesTwoClickSecAchievement();
+    }
+    if (prestigeTracker == 1 && !ownOnePrestigeAchievement) {
+        unlockOwnOnePrestigeAchievement();
+    }
+
+     if (number >= 10 && !tenClicksAchievement) {
+        unlockTenClicksAchievement();
+    }
+    if (number >= 100 && !hundredClickAchievement) {
+        unlockHundrdClickAchievement();
+    }
+    if (number >= 1000 && !thousandClicksAchievement) {
+        unlockThousandClickAchievement();
+    }
+    if (number >= 10000 && !tenThousandClicksAchievement) {
+        unlocktenThousandClickAchievement();
+    }
+    if (number >= 100000 && !hundredThousandClicksAchievement) {
+        unlockHundredThousandClickAchievement();
+    }
+    if (number >= 1000000 && !oneMillionClicksAchievement) {
+        unlockOneMillionClickAchievement();
+    }
+    if (number >= 10000000 && !tenMillionClicksAchievement) {
+        unlockTenMillionClickAchievement();
+    }
+    if (number >= 100000000 && !hundredMillionClicksAchievement) {
+        unlockHundredMillionClickAchievement();
+    }
+    if (number >= 1000000000 && !oneBillionClicksAchievement) {
+        unlockOneBillionClickAchievement();
+    }
+    if (number >= 10000000000 && !tenBillionClicksAchievement) {
+        unlockTenBillionClickAchievement();
+    }
+    if (number >= 100000000000 && !hundredBillionClicksAchievement) {
+        unlockhundredBillionClickAchievement();
+    }
+    if (number >= 1000000000000 && !trillionClicksAchievement) {
+        unlockTrillionClickAchievement();
+    }
+    if (number >= 10000000000000 && !tenTrillionClicksAchievement) {
+        unlockTenTrillionClickAchievement();
+    }
+    if (number >= 100000000000000 && !hundredTrillionClicksAchievement) {
+        unlockHundredTrillionClickAchievement();
+    }
+    if (number >= 1000000000000000 && !quadrillionClicksAchievement) {
+        unlockQuadrillionClickAchivement();
+    }
+    if (number >= 1000000000000000000 && !breakAchievement) {
+        unlockBreakAchievement();
+    }
+    
+
+
+
+    if (clickPower >= 10 && !ownTenClickPowerAchievement) {
+        unlockOwnTenClickPowerAchievement();
+    }
+    if (clickPower >= 1000 && !ownThousandClickPowerAchievement) {
+        unlockOwnThousandClickPowerAchievement();
+    }
+    if (clickPower >= 100000 && !ownHundredThousandClickPowerAchievement) {
+        unlockOwnHundredThousandClickPowerAchievement();
+    }
+    if (clickPower >= 1000000 && !ownMillionClickPowerAchievement) {
+        unlockOwnMillionClickPowerAchievement();
+    }
+    if (clickPower >= 1000000000 && !ownBillionClickPowerAchievement) {
+        unlockOwnBillionPowerAchievement();
+    }
+
+
+
+    if (timePower >= 10 && !ownTenTimePower) {
+        unlockOwnTenTimePower();
+    }
+    if (timePower >= 1000 && !ownThousandTimePower) {
+        unlockOwnThousandTimePower();
+    }
+    if (timePower >= 100000 && !ownHundredThousandTimePower) {
+        unlockOwnHundredThousandTimePower();
+    }
+    if (timePower >= 1000000 && !ownMillionTimePower) {
+        unlockOwnMillionTimePower();
+    }
+    if (timePower >= 1000000000 && !ownBillionTimePower) {
+        unlockOwnBillionTimePower();
+    }
+
+    if (prestigeAmount >= 10 && !ownTenPrestige) {
+        unlockOwnTenPrestige();
+    }
+    if (prestigeAmount >= 50 && !ownFiftyPrestige) {
+        unlockOwnFiftyPrestige();
+    }
+    if (prestigeAmount >= 100 && !ownHundredPrestige) {
+        unlockOwnHundredPrestige();
+    }
+
+    if (clickPower >= 1000000000000 && !ownTrillionClickPowerAchievement) {
+        unlockOwnTrillionPowerAchievement();
+    }
+
+
     calculatePrestigeCanBuy();
     extractNumber.innerHTML = formatNumber(number);
     updateButtonBorders();
@@ -485,14 +647,536 @@ requestAnimationFrame(updateUI);
 updateButtonBorders()
 extractNumber.innerHTML = formatNumber(number);
 extractClickCost.innerHTML = formatNumber(clickCost);
+extractClickPower.innerHTML = formatNumber(clickPower)
 extractTimeCost.innerHTML = formatNumber(timeCost);
 extractPrestigeCost.innerHTML = formatNumber(prestigeCost);
 extractPowerTimeTwoCost.innerHTML = formatNumber(powerTimeTwoCost)
 extractTimePower.innerHTML = formatNumber(timePower)
 extractTimePowerTimesTwoCost.innerHTML = formatNumber(timePowerTimesTwoCost)
+extractPrestigeAmount.innerHTML = formatNumber(prestigeAmount)
+
+function openAchievements() {
+  document.getElementById("achievementsOverlay").classList.remove("hidden");
+  renderAchievements();
+}
+
+function closeAchievements() {
+  document.getElementById("achievementsOverlay").classList.add("hidden");
+}
+
+function openCustomization() {
+    document.getElementById("customizationOverlay").classList.remove("hidden")
+    renderCustomization();
+}
+
+function closeCustomization() {
+    document.getElementById("customizationOverlay").classList.add("hidden")
+}
+
+let firstClickAchievement = false;
+let ownPlusOneClickAchievement = false;
+let ownPlusOneClickPerSecAchievement = false;
+let ownTimesTwoClickAchievement = false;
+let ownTimesTwoClickSecAchievement = false;
+let ownOnePrestigeAchievement = false;
+
+let tenClicksAchievement = false;
+let hundredClickAchievement = false;
+let thousandClicksAchievement = false;
+let tenThousandClicksAchievement = false;
+let hundredThousandClicksAchievement = false;
+let oneMillionClicksAchievement = false;
+let tenMillionClicksAchievement = false;
+let hundredMillionClicksAchievement = false;
+let oneBillionClicksAchievement = false;
+let tenBillionClicksAchievement = false;
+let hundredBillionClicksAchievement = false;
+let trillionClicksAchievement = false;
+let tenTrillionClicksAchievement = false;
+let hundredTrillionClicksAchievement = false;
+let quadrillionClicksAchievement = false;
+let breakAchievement = false;
+
+let ownTenClickPowerAchievement = false;
+let ownThousandClickPowerAchievement = false;
+let ownHundredThousandClickPowerAchievement = false;
+let ownMillionClickPowerAchievement = false;
+let ownBillionClickPowerAchievement = false;
+let ownTrillionClickPowerAchievement = false;
+
+let ownTenTimePower = false;
+let ownThousandTimePower = false;
+let ownHundredThousandTimePower = false;
+let ownMillionTimePower = false;
+let ownBillionTimePower = false;
+
+let ownTenPrestige = false;
+let ownFiftyPrestige = false;
+let ownHundredPrestige = false;
+
+let totalPlusOneClickOwned = 0;
+
+function unlockFirstClickAchievement() {
+    firstClickAchievement = true;
+
+    const achievement = document.getElementById("firstClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("The Beginning");
+    playAchievementSound();
+}
+
+function unlockOwnPlusOneClickAchievement() {
+    ownPlusOneClickAchievement = true;
+
+    const achievement = document.getElementById("ownPlusOneClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("1+1=2")
+    playAchievementSound();
+}
+
+function unlockOwnPlusOneClickPerSecAchievement() {
+    ownPlusOneClickPerSecAchievement = true;
+
+    const achievement = document.getElementById("ownPlusOneClickPerSecAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Passive Income")
+    playAchievementSound();
+}
+
+function unlockOwnTimesTwoClickAchievement() {
+    ownTimesTwoClickAchievement = true;
+
+    const achievement = document.getElementById("ownTimesTwoClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Mathing")
+    playAchievementSound();
+}
+
+function unlockOwnTimesTwoClickSecAchievement() {
+    ownTimesTwoClickSecAchievement = true;
+
+    const achievement = document.getElementById("ownTimesTwoClickSecAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Mastering Time");
+    playAchievementSound();
+    
+}
+
+function unlockOwnOnePrestigeAchievement() {
+    ownOnePrestigeAchievement = true;
+
+    const achievement = document.getElementById("ownOnePrestigeAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("New and Improved");
+    playAchievementSound();
+}
 
 
 
 
 
+function unlockTenClicksAchievement() {
+    tenClicksAchievement = true;
 
+    const achievement = document.getElementById("tenClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("We're Getting Somewhere");
+    playAchievementSound()
+}
+
+function unlockHundrdClickAchievement() {
+    hundredClickAchievement = true;
+
+    const achievement = document.getElementById("hundredClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Making Progress");
+    playAchievementSound();
+}
+
+function unlockThousandClickAchievement() {
+    thousandClicksAchievement = true;
+
+    const achievement = document.getElementById("thousandClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Determined");
+    playAchievementSound();
+    
+}
+
+function unlocktenThousandClickAchievement() {
+    tenThousandClicksAchievement = true;
+
+    const achievement = document.getElementById("tenThousandClickAchievement")
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Restart?");
+    playAchievementSound();
+}
+
+function unlockHundredThousandClickAchievement() {
+    hundredThousandClicksAchievement = true;
+
+    const achievement = document.getElementById("hundredThousandClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Wow!");
+    playAchievementSound();
+
+}
+
+function unlockOneMillionClickAchievement() {
+    oneMillionClicksAchievement = true;
+
+    const achievement = document.getElementById("oneMillionClickAchievement")
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Millionaire")
+    playAchievementSound();
+}
+
+function unlockTenMillionClickAchievement() {
+    tenMillionClicksAchievement = true;
+
+    const achievement = document.getElementById("tenMillionClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Top 1%")
+    playAchievementSound();
+}
+
+function unlockHundredMillionClickAchievement() {
+    hundredMillionClicksAchievement = true;
+
+    const achievement = document.getElementById("hundredMillionClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Keep Going!");
+    playAchievementSound();
+}
+
+function unlockOneBillionClickAchievement() {
+    oneBillionClicksAchievement = true;
+
+    const achievement = document.getElementById('oneBillionClickAchievement');
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Billionaire");
+    playAchievementSound();
+    
+}
+
+function unlockTenBillionClickAchievement() {
+    tenBillionClicksAchievement = true;
+
+    const achievement = document.getElementById("tenBillionClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Slow Progress");
+    playAchievementSound();
+}
+
+function unlockhundredBillionClickAchievement() {
+    hundredBillionClicksAchievement = true;
+
+    const achievement = document.getElementById("hundredBillionClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Leave Some For Us!")
+    playAchievementSound();
+}
+
+function unlockTrillionClickAchievement() {
+    trillionClicksAchievement = true;
+
+    const achievement = document.getElementById("trillionClickAchievement")
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Trillionaire")
+    playAchievementSound();
+}
+
+function unlockTenTrillionClickAchievement() {
+    tenTrillionClicksAchievement = true;
+
+    const achievement = document.getElementById("tenTrillionClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("I Have No Words...")
+    playAchievementSound();
+}
+
+function unlockHundredTrillionClickAchievement() {
+    hundredTrillionClicksAchievement = true;
+
+    const achievement = document.getElementById("hundredTrillionClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+
+    showAchievementPopup("Mind Giving Me Some?")
+    playAchievementSound();
+}
+
+function unlockQuadrillionClickAchivement() {
+    quadrillionClicksAchievement = true;
+
+    const achievement = document.getElementById("quadrillionClickAchievement");
+
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+
+    showAchievementPopup("The G.O.A.T")
+    playAchievementSound();
+}
+
+function unlockOwnTenClickPowerAchievement() {
+    ownTenClickPowerAchievement = true;
+
+    const achievement = document.getElementById("ownTenClickPowerAchievement");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("You Have the Power");
+    playAchievementSound();
+
+}
+
+function unlockOwnThousandClickPowerAchievement() {
+    ownThousandClickPowerAchievement = true;
+
+    const achievement = document.getElementById("ownThousandClickPowerAchievement");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("I Sense Your Strength");
+    playAchievementSound();
+}
+
+function unlockOwnHundredThousandClickPowerAchievement() {
+    ownHundredThousandClickPowerAchievement = true;
+
+    const achievement = document.getElementById("ownHundredThousandClickPowerAchievement");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Oof");
+    playAchievementSound();
+}
+
+function unlockOwnMillionClickPowerAchievement() {
+    ownMillionClickPowerAchievement = true;
+
+    const achievement = document.getElementById("ownMillionClickPowerAchievement");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Chill with those Muscles!");
+    playAchievementSound();
+}
+
+function unlockOwnBillionPowerAchievement() {
+    ownBillionClickPowerAchievement = true;
+
+    const achievement = document.getElementById("ownBillionClickPowerAchievement");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Muscular")
+    playAchievementSound();
+}
+
+function unlockOwnTrillionPowerAchievement() {
+    ownTrillionClickPowerAchievement = true;
+
+    const achievement = document.getElementById("ownTrillionClickPowerAchievement");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Body Builder");
+    playAchievementSound();
+}
+
+function unlockOwnTenTimePower() {
+    ownTenTimePower = true;
+
+    const achievement = document.getElementById("ownTenTimePower");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Investor")
+    playAchievementSound();
+}
+
+function unlockOwnThousandTimePower() {
+    ownThousandTimePower = true;
+
+    const achievement = document.getElementById("ownThousandTimePower");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Patience is Key")
+    playAchievementSound();
+}
+
+function unlockOwnHundredThousandTimePower() {
+    ownHundredThousandTimePower = true;
+
+    const achievement = document.getElementById("ownHundredThousandTimePower");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Sit Down and Do Nothing")
+    playAchievementSound();
+}
+
+function unlockOwnMillionTimePower() {
+    ownMillionTimePower = true;
+
+    const achievement = document.getElementById("ownMillionTimePower");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Jealous");
+    playAchievementSound();
+}
+
+function unlockOwnBillionTimePower() {
+    ownBillionTimePower = true;
+
+    const achievement = document.getElementById("ownBillionTimePower");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Easy Numbers");
+    playAchievementSound();
+}
+
+function unlockOwnTenPrestige() {
+    ownTenPrestige = true;
+
+    const achievement = document.getElementById("ownTenPrestige");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Saving Up?")
+    playAchievementSound();
+}
+
+function unlockOwnFiftyPrestige() {
+    ownFiftyPrestige = true;
+
+    const achievement = document.getElementById("ownFiftyPrestige");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("You Are Really Dedicated!")
+    playAchievementSound();
+}
+
+function unlockOwnHundredPrestige() {
+    ownHundredPrestige = true;
+
+    const achievement = document.getElementById("ownHundredPrestige");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Prestigious")
+    playAchievementSound();
+}
+
+
+
+function unlockBreakAchievement() {
+    breakAchievement = true;
+
+    const achievement = document.getElementById("breakAchievement");
+    achievement.classList.remove("achievementLocked");
+    achievement.classList.add("achievementUnlocked");
+
+    showAchievementPopup("Welp, that's it for now!")
+    playBreakGameSound();
+}
+
+
+
+
+function showAchievementPopup(name) {
+
+    const popup = document.getElementById("achievementPopup");
+    const text = document.getElementById("achievementPopupText");
+
+    text.textContent = name;
+
+    popup.classList.add("show");
+
+    setTimeout(() => {
+        popup.classList.remove("show");
+    }, 3000);
+}
+
+const startScreen = document.getElementById("startScreen");
+
+startScreen.addEventListener("click", () => {
+    // Start music
+    setupFirstTrack();
+
+    audioPlayer.volume = 0.5;
+    audioPlayer.play().catch(e => console.log(e));
+
+    musicStarted = true;
+
+    startScreen.classList.add("fadeOut");
+
+    setTimeout(() => {
+        startScreen.remove();
+    }, 600);
+});

@@ -5,19 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number Incremental</title>
     <link rel = "stylesheet" href = "styles.css" />
+    <meta name="description" content="Number Incremental is a fun clicker game where you upgrade your number to infinity!">
+    <meta name="keywords" content="incremental game, idle game, clicker game, prestige game, browser game">
+    <meta name="author" content="Your Name">
     <script src = "script.js" defer></script>
 </head>
 <body>
+    <div id="startScreen">
+        <h1 id = "titleText">Number Incremental</h1>
+        <p id = "titleDescription">Welcome! Feel free to make your number as big as possible. ☺︎</p>
+        <p id = "titleDescription">Click anywhere to get started!</p>
+    </div>
+    <div id="achievementsOverlay" class="overlay hidden">
+        <div class="panel">
+            <h1>Achievements</h1>
+            <div id="achievementList">
+
+                <div class = "achievementSectionName">Progress Achievements</div>
+                <div class="achievementLocked" id = "firstClickAchievement">
+                    <div id = "achievementTitle">The Beginning</div>
+                    <div id = "achievementDescription">Click "Increase" for the first Time!</div>
+                </div>
+                <div class="achievementLocked" id = "ownPlusOneClickAchievement">
+                    <div id = "achievementTitle">1+1=2</div>
+                    <div id = "achievementDescription">Buy Your First +1 Click</div>
+                </div>
+                <div class="achievementLocked" id = "ownPlusOneClickPerSecAchievement">
+                    <div id = "achievementTitle">Passive Income</div>
+                    <div id = "achievementDescription">Buy Your First +1 Click/Sec</div>
+                </div>
+                <div class="achievementLocked" id = "ownTimesTwoClickAchievement">
+                    <div id = "achievementTitle">Mathing</div>
+                    <div id = "achievementDescription">Buy Your First 2x Click</div>
+                </div>
+                <div class="achievementLocked" id = "ownTimesTwoClickSecAchievement">
+                    <div id = "achievementTitle">Mastering Time</div>
+                    <div id = "achievementDescription">Buy Your First 2x Click/Sec</div>
+                </div>
+                <div class="achievementLocked" id = "ownOnePrestigeAchievement">
+                    <div id = "achievementTitle">New and Improved</div>
+                    <div id = "achievementDescription">Prestige for the first time.</div>
+                </div>
+                
+
+                <div class = "achievementSectionName">Number Achievements</div>
+                <div class="achievementLocked" id = "tenClickAchievement">
+                    <div id = "achievementTitle">We're Getting Somewhere</div>
+                    <div id = "achievementDescription">Own 10 Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "hundredClickAchievement">
+                    <div id = "achievementTitle">Making Progress</div>
+                    <div id = "achievementDescription">Own 100 Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "thousandClickAchievement">
+                    <div id = "achievementTitle">Determined</div>
+                    <div id = "achievementDescription">Own 1K Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "tenThousandClickAchievement">
+                    <div id = "achievementTitle">Restart?</div>
+                    <div id = "achievementDescription">Own 10k Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "hundredThousandClickAchievement">
+                    <div id = "achievementTitle">Wow!</div>
+                    <div id = "achievementDescription">Own 100k Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "oneMillionClickAchievement">
+                    <div id = "achievementTitle">Millionaire</div>
+                    <div id = "achievementDescription">Own 1M Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "tenMillionClickAchievement">
+                    <div id = "achievementTitle">Top 1%</div>
+                    <div id = "achievementDescription">Own 10M Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "hundredMillionClickAchievement">
+                    <div id = "achievementTitle">Keep Going!</div>
+                    <div id = "achievementDescription">Own 100M Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "oneBillionClickAchievement">
+                    <div id="achievementTitle">Billionaire</div>
+                    <div id="achievementDescription">Own 1B Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "tenBillionClickAchievement">
+                    <div id="achievementTitle">Slow Progress</div>
+                    <div id="achievementDescription">Own 10B Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "hundredBillionClickAchievement">
+                    <div id="achievementTitle">Leave Some For Us!</div>
+                    <div id="achievementDescription">Own 100B Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "trillionClickAchievement">
+                    <div id="achievementTitle">Trillionaire</div>
+                    <div id="achievementDescription">Own 1T Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "tenTrillionClickAchievement">
+                    <div id = "achievementTitle">I Have No Words...</div>
+                    <div id = "achievementDescription">Own 10T Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "hundredTrillionClickAchievement">
+                    <div id = "achievementTitle">Mind Giving Me Some?</div>
+                    <div id = "achievementDescription">Own 100T Numbers</div>
+                </div>
+                <div class="achievementLocked" id = "quadrillionClickAchievement">
+                    <div id = "achievementTitle">The G.O.A.T</div>
+                    <div id = "achievementDescription">Own 1Qa Numbers</div>
+                </div>
+ 
+                <div class = "achievementSectionName">Click Power Achievements</div>
+
+                <div class="achievementLocked" id = "ownTenClickPowerAchievement">
+                    <div id = "achievementTitle">You Have the Power</div>
+                    <div id = "achievementDescription">Own 10 Click Power</div>
+                </div>
+                <div class="achievementLocked" id = "ownThousandClickPowerAchievement">
+                    <div id = "achievementTitle">I Sense Your Strength</div>
+                    <div id = "achievementDescription">Own 1k Click Power</div>
+                </div>
+                 <div class="achievementLocked" id = "ownHundredThousandClickPowerAchievement">
+                    <div id = "achievementTitle">Oof</div>
+                    <div id = "achievementDescription">Own 100k Click Power</div>
+                </div>
+                <div class="achievementLocked" id = "ownMillionClickPowerAchievement">
+                    <div id = "achievementTitle">Chill with those Muscles!</div>
+                    <div id = "achievementDescription">Own 1M Click Power</div>
+                </div>
+                <div class="achievementLocked" id = "ownBillionClickPowerAchievement">
+                    <div id = "achievementTitle">Muscular</div>
+                    <div id = "achievementDescription">Own 1B Click Power</div>
+                </div>
+                <div class="achievementLocked" id = "ownTrillionClickPowerAchievement">
+                    <div id = "achievementTitle">Body Builder</div>
+                    <div id = "achievementDescription">Own 1T Click Power</div>
+                </div>
+
+                </div>
+
+                <div class="achievementSectionName">Click Per Second Achievements</div>
+
+                <div class="achievementLocked" id = "ownTenTimePower">
+                    <div id = "achievementTitle">Investor</div>
+                    <div id = "achievementDescription">Have 10 Click/Sec</div>
+                </div>
+                
+                <div class="achievementLocked" id = "ownThousandTimePower">
+                    <div id = "achievementTitle">Patience is Key</div>
+                    <div id = "achievementDescription">Have 1k Click/Sec</div>
+                </div>
+
+                <div class="achievementLocked" id = "ownHundredThousandTimePower">
+                    <div id = "achievementTitle">Sit Down and Do Noting</div>
+                    <div id = "achievementDescription">Have 100k Click/Sec</div>
+                </div>
+
+                <div class="achievementLocked" id = "ownMillionTimePower">
+                    <div id = "achievementTitle">Jealous</div>
+                    <div id = "achievementDescription">Have 1M Click/Sec</div>
+                </div>
+                
+                <div class="achievementLocked" id = "ownBillionTimePower">
+                    <div id = "achievementTitle">Easy Numbers</div>
+                    <div id = "achievementDescription">Have 1B Click/Sec</div>
+                </div>
+ 
+                <div class="achievementSectionName">Prestige Achievements</div>
+                
+                <div class="achievementLocked" id = "ownTenPrestige">
+                    <div id = "achievementTitle">Saving Up?</div>
+                    <div id = "achievementDescription">Hold 10 Prestige</div>
+                </div>
+
+                <div class="achievementLocked" id = "ownFiftyPrestige">
+                    <div id = "achievementTitle">You Are Really Dedicated!</div>
+                    <div id = "achievementDescription">Hold 50 Prestige</div>
+                </div>
+
+                <div class="achievementLocked" id = "ownHundredPrestige">
+                    <div id = "achievementTitle">Prestigious</div>
+                    <div id = "achievementDescription">Hold 100 Prestige</div>
+                </div>
+
+                <div class="achievementSectionName">Sepcial Achievement</div>
+
+                <div class="achievementLocked" id = "breakAchievement">
+                    <div id = "achievementTitle">Welp, that's it for now!</div>
+                    <div id = "achievementDescription">Get 1Qi Numbers</div>
+                </div>
+
+            
+            <button onclick="closeAchievements()">Close</button>
+        </div>
+    </div>
+    <div id="customizationOverlay" class ="overlay hidden">
+        <div class="panel">
+            <h1>Customization</h1>
+            <div id="colorList"></div>
+            <button onclick = "closeCustomization()">Close</button>
+        </div>
+    </div>
     <div id = "muteSoundEffect">♪</div>
     <div id = "muteMusic">♫</div>
+    <div id = "topButtons">
+        <div onclick="openAchievements()" id="achievementButton">Achievements</div>
+        <div id = "customizationButton" onclick = "openCustomization()">Customization</div>
+    </div>
     <audio id="bg-music" preload="auto"></audio>
     <audio id="click-sound" preload="auto"></audio>
     <audio id="upgrade-sound" preload="auto"></audio>
     <audio id="prestige-sound" preload="auto"></audio>
     <audio id="prestigeUpgrade-sound" preload="auto"></audio>
+    <audio id="achievementUnlock-sound" preload="auto"></audio>
+    <audio id="breakAchievement-sound" preload="auto"></audio>
     <div class = "left">
             <h1>Number Incremental Game</h1>
+            <div id = "number-container">
             <div id = "number">0</div>
+            </div>
             <div id = "increase">Increase</div>
             <h2>Stats</h2>
             <h3>Click Power: <span id = "statTextPower">1</span></h3>
@@ -28,7 +229,7 @@
         <div id = "clickPowerUpgrade" onclick="upgradeClick()">
             <div id = "buttonText">+1 Click</div>
             <div id = "buttonText">Cost: <span id = "clickCost">10</span></div>
-            <div id = "buttonText">Owned: <span id = "clickOwned">0</div>
+            <div id = "buttonText">Owned: <span id = "clickOwned">0</span></div>
         </div>
         <div id = "clickTimeUpgrade" onclick="upgradeTime()">
             <div id = "buttonText">+1 Click/Sec</div>
@@ -48,7 +249,9 @@
     </div>
     <div class = "right">
         <h1>Prestige</h1>
+        <div id = "prestige-container">
         <div id = "prestigeAmount">0</div>
+        </div>
         <div id = "prestigeUpgrade" onclick="upgradePrestige()">
             <div id = "buttonText">+<span id="prestigeCanBuy">1</span> Presitge</div>
             <div id = "buttonText">Cost: <span id = "prestigeCost">10000</span></div>
@@ -63,5 +266,10 @@
             <div id = "buttonText">Cost: <span id = "clickStartCost">1</span> Prestige</div>
         </div> 
     </div>
-</div></body>
+</div>
+<div id="achievementPopup" class="achievementPopup">
+    <div id="achievementPopupTitle">Achievement Unlocked!</div>
+    <div id="achievementPopupText"></div>
+</div>
+</body>
 </html>

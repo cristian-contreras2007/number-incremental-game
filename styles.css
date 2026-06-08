@@ -12,6 +12,15 @@ body {
   box-sizing: border-box;
 }
 
+* {
+   scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
 
 *, *::before, *::after {
   box-sizing: inherit;
@@ -34,11 +43,24 @@ h1, h2, h3 {
 
 
 #number { 
-  color: white; 
-  font-size: clamp(7rem, 15vw, 9rem); 
+  color: white;
+  font-size: clamp(2.5rem, 8vw, 8rem);
   line-height: 1;
-  margin: 20px 0;
-  text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white; 
+  text-align: center;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-shadow:
+  0 0 10px white,
+  0 0 20px white,
+  0 0 30px white,
+  0 0 40px white;
+  white-space: nowrap;
 }
 
 
@@ -84,12 +106,25 @@ h1, h2, h3 {
   }
 }
 
+@media (max-width: 768px) {
+  #number {
+    font-size: 6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #number {
+    font-size: 4.5rem;
+  }
+}
+
 #prestigeAmount {
   color: white; 
-  font-size: clamp(5rem, 10vw, 6rem); 
   line-height: 1;
   margin: 20px 0;
   text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white, 0 0 40px white; 
+  font-size: clamp(3rem, 6vw, 6rem);
+  text-align: center;
 }
 
 button, #increase, #clickPowerUpgrade, #clickTimeUpgrade,
@@ -120,10 +155,288 @@ button, #increase, #clickPowerUpgrade, #clickTimeUpgrade,
   z-index: 1000;
 }
 
+#muteMusic:hover,
+#muteSoundEffect:hover {
+  cursor: pointer;
+}
+
 #muteMusic {
   right: 2vw;
 }
 
 #muteSoundEffect {
   right: calc(2vw + clamp(40px, 6vw, 50px) + 10px);
+}
+
+#number-container{
+  width: 100%;
+  max-width: 320px;   /* controls max space it can take */
+  height: 160px;      /* fixed visual “slot” */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#prestige-container {
+  width: 100%;
+  max-width: 320px;
+  height: 120px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.panel {
+  background: black;
+  border: 2px solid white;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  color: white;
+  text-align: center;
+  border-radius: 20px;
+
+  max-height: 80vh;
+  overflow-y: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+  
+}
+
+.panel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.hidden {
+  display: none;
+}
+
+#achievementButton {
+  position: fixed;
+  top: 2vw;
+
+  width: clamp(150px, 6vw, 300px);
+  height: clamp(40px, 6vw, 50px);
+  font-size: clamp(14px, 2vw, 20px);
+
+  color: white;
+  background: black;
+  border: 3px solid white;
+  border-radius: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+  left: 2vw;
+}
+
+#customizationButton {
+  position: fixed;
+  top: 2vw;
+
+  width: clamp(150px, 6vw, 300px);
+  height: clamp(40px, 6vw, 50px);
+  font-size: clamp(14px, 2vw, 20px);
+
+  color: white;
+  background: black;
+  border: 3px solid white;
+  border-radius: 20px;
+
+  display: none; /* Change to flex when ready to be implemented */
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+  left: calc(2vw + clamp(40px, 6vw, 50px) + 10px);
+}
+
+#topButtons {
+  position: fixed;
+  top: 2vw;
+  left: 2vw;
+
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+#achievementButton,
+#customizationButton {
+  position: static; /* IMPORTANT */
+}
+
+#achievementButton:hover,
+#customizationButton:hover {
+  cursor: pointer;
+}
+
+.achievementBox {
+  background: black;
+
+  border: 3px solid white;
+  border-radius: 20px;
+
+  width: 95%;
+  max-width: 100%;
+
+  padding: 15px;
+  margin: 15px auto;
+
+  color: white;
+  text-align: center;
+
+  overflow-wrap: break-word;
+
+  
+}
+
+.achievementLocked {
+  background: black;
+  border: 3px solid gray;
+  color: gray;
+
+  border-radius: 20px;
+  padding: 15px;
+  margin: 15px auto;
+  width: 95%;
+}
+
+#achievementTitle {
+  font-weight: 600;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+
+  margin-bottom: 10px;
+
+  overflow-wrap: break-word;
+}
+
+#achievementDescription {
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+
+  overflow-wrap: break-word;
+}
+
+.achievementUnlocked {
+  background: black;
+  border: 3px solid white;
+  color: white;
+
+  border-radius: 20px;
+  padding: 15px;
+  margin: 15px auto;
+  width: 95%;
+
+  box-shadow:
+    0 0 5px white,
+    0 0 8px white,
+    0 0 10px rgba(255,255,255,0.7);
+}
+
+.achievementPopup {
+    position: fixed;
+
+    bottom: 20px;
+    right: 20px;
+
+    background: black;
+    color: white;
+
+    border: 3px solid white;
+    border-radius: 15px;
+
+    padding: 15px 20px;
+
+    min-width: 250px;
+
+    opacity: 0;
+    transform: translateY(20px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+
+    z-index: 10000;
+
+    pointer-events: none;
+}
+
+.achievementPopup.show {
+    opacity: 1;
+    transform: translateY(0);
+
+    box-shadow:
+        0 0 10px white,
+        0 0 20px white;
+}
+
+#achievementPopupTitle {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#startScreen {
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 24px;
+    z-index: 9999;
+
+    cursor: pointer;
+    transition: opacity 0.6s ease;
+}
+
+#startScreen.fadeOut {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#titleText {
+    font-size: clamp(28px, 4vw, 64px);
+    text-align: center;
+    margin: 0;
+}
+
+#titleDescription {
+    font-size: clamp(14px, 2vw, 22px);
+    text-align: center;
+    margin-top: 8px;
+}
+
+.achievementSectionName {
+    font-size: clamp(1rem, 2vw, 1.75rem);
+
+    text-align: center;
+    margin: 15px 0;
+
+    width: 100%;
+
+    overflow-wrap: break-word;
+    line-height: 1.2;
 }
